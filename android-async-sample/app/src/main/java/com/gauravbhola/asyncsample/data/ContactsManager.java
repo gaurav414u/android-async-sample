@@ -5,6 +5,8 @@ import com.gauravbhola.asyncsample.data.model.AddContactsResponse;
 import com.gauravbhola.asyncsample.data.model.Contact;
 import com.gauravbhola.asyncsample.data.remote.ApiService;
 
+import android.support.annotation.WorkerThread;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -24,6 +26,7 @@ public class ContactsManager {
         mApiService = apiService;
     }
 
+    @WorkerThread
     public List<Contact> fetchContacts() {
         try {
             Response<List<Contact>> r = mApiService.getContacts(mAccountId + "").execute();
@@ -36,6 +39,7 @@ public class ContactsManager {
         }
     }
 
+    @WorkerThread
     public AddContactsResponse addContact(final Contact contact) {
         try {
             AddContactsRequest request = new AddContactsRequest();
