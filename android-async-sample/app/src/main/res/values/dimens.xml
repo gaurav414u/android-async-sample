@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="content_inset">16dp</dimen>
+    <dimen name="content_keyline_inset">72dp</dimen> <!-- from screen edge -->
+
+    <dimen name="divider_height">0.5dp</dimen>
+</resources>

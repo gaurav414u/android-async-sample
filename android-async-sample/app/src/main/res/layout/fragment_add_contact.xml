@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <android.support.design.widget.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_marginTop="32dp"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:hint="Name"
+            android:id="@+id/et_name"
+    />
+
+    <android.support.design.widget.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:hint="Email"
+            android:id="@+id/et_email"
+    />
+
+    <android.support.design.widget.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="phone"
+            android:hint="Number"
+            android:id="@+id/et_phone"
+    />
+
+    <TextView android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_gravity="center_horizontal"
+              android:gravity="center"
+              android:textColor="@android:color/holo_red_light"
+              android:text="Error"
+              android:visibility="gone"
+              android:id="@+id/tv_error"
+    />
+
+    <Button android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/btn_add"
+            android:text="add"
+    />
+
+    <ProgressBar android:layout_width="32dp"
+                 android:layout_height="32dp"
+                 android:layout_marginTop="16dp"
+                 android:layout_gravity="center_horizontal"
+                 android:visibility="gone"
+                 android:id="@+id/progress_bar"
+    />
+
+
+</LinearLayout>

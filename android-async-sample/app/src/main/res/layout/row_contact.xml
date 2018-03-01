@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:background="?attr/selectableItemBackground"
+        android:layout_height="wrap_content">
+
+    <ImageView android:layout_width="64dp"
+               android:layout_height="64dp"
+               android:layout_alignParentLeft="true"
+               android:layout_alignParentTop="true"
+               android:scaleType="centerCrop"
+               android:id="@+id/iv_contact"/>
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_marginLeft="8dp"
+                  android:layout_toRightOf="@+id/iv_contact"
+                  android:orientation="vertical">
+
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:textSize="20dp"
+                  android:textColor="@android:color/black"
+                  android:id="@+id/tv_name"
+                  android:text="Name"
+        />
+
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:textColor="#6D6D6D"
+                  android:layout_marginTop="4dp"
+                  android:text="xyz@microsoft.com"
+                  android:id="@+id/tv_email"
+        />
+
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:textColor="#6D6D6D"
+                  android:textSize="18dp"
+                  android:text="+919034157550"
+                  android:id="@+id/tv_phone"
+        />
+    </LinearLayout>
+
+</RelativeLayout>

@@ -1,0 +1,59 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 26
+    buildToolsVersion '26.0.2'
+    defaultConfig {
+        applicationId "com.gauravbhola.asyncsample"
+        minSdkVersion 15
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+ext {
+    supportVersion = '25.0.0'
+    robolectricVersion = '3.0'
+    assertjVersion = '1.1.1'
+}
+
+dependencies {
+    compile "com.android.support:appcompat-v7:$supportVersion",
+            "com.android.support:recyclerview-v7:$supportVersion",
+            "com.android.support:design:$supportVersion"
+    testCompile "org.robolectric:robolectric:$robolectricVersion",
+            "org.robolectric:shadows-support-v4:$robolectricVersion",
+            'org.mockito:mockito-core:1.9.5+',
+            'junit:junit:4.12'
+
+    // Retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+
+    // EventBus
+    implementation 'com.google.code.gson:gson:2.8.2'
+    implementation 'org.greenrobot:eventbus:3.1.1'
+
+    // Dagger
+    implementation 'com.google.dagger:dagger:2.10'
+    annotationProcessor 'com.google.dagger:dagger-android-processor:2.11'
+    implementation 'com.google.dagger:dagger-android-support:2.11' // if you use the support libraries
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.11'
+
+    // ButterKnife
+    compile 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+
+
+    testCompile("com.squareup.assertj:assertj-android:$assertjVersion") {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    }
+}

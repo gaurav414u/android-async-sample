@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">ContactsApp</string>
+    <string name="title_add_contact_activity">Add Contact</string>
+    <string name="title_view_contact_activity">Contacts</string>
+    <string name="accessibility_add_contact">Add Contact</string>
+    <string name="label_contact_name">Name</string>
+    <string name="label_contact_email">Email</string>
+    <string name="label_contact_phone">Phone</string>
+    <string name="save">Save</string>
+    <string name="search_contacts">Search Contacts</string>
+</resources>

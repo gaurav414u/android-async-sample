@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@android:color/white"
+        android:id="@+id/members_coordinatorlayout">
+
+    <Button android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/btn_add_contact"
+            android:text="Add a Contact"
+    />
+
+    <android.support.v7.widget.RecyclerView
+            android:id="@+id/contacts_list_view"
+            android:layout_width="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_height="match_parent"
+            android:layout_above="@id/btn_add_contact"
+    />
+
+    <ProgressBar
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_centerInParent="true"
+            android:id="@+id/progress_bar"
+    />
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:id="@+id/error_view"
+            android:layout_centerInParent="true"
+            android:visibility="gone"
+            android:gravity="center">
+
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:id="@+id/error_text"
+                  android:text="helo, whats up"
+        />
+
+        <Button android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="retry"
+                android:id="@+id/btn_retry"
+        />
+    </LinearLayout>
+
+</RelativeLayout>
