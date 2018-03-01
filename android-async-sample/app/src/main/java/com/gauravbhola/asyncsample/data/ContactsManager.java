@@ -5,6 +5,7 @@ import com.gauravbhola.asyncsample.data.model.AddContactsResponse;
 import com.gauravbhola.asyncsample.data.model.Contact;
 import com.gauravbhola.asyncsample.data.remote.ApiService;
 
+import android.support.annotation.MainThread;
 import android.support.annotation.WorkerThread;
 
 import java.io.IOException;
@@ -28,9 +29,11 @@ public class ContactsManager {
 
     @WorkerThread
     public List<Contact> fetchContacts() {
+        // If no network, return the cached results
         try {
             Response<List<Contact>> r = mApiService.getContacts(mAccountId + "").execute();
             if (r.isSuccessful()) {
+                // Save the results if required
                 return r.body();
             }
             return null;
@@ -41,6 +44,7 @@ public class ContactsManager {
 
     @WorkerThread
     public AddContactsResponse addContact(final Contact contact) {
+        // If no network, return the cached results
         try {
             AddContactsRequest request = new AddContactsRequest();
             request.setAccountId(mAccountId);
@@ -49,6 +53,7 @@ public class ContactsManager {
             request.setPhone(contact.getPhone());
             Response<AddContactsResponse> r = mApiService.addContact(request).execute();
             if (r.isSuccessful()) {
+                // Save the results if required
                 return r.body();
             }
             return null;
