@@ -16,9 +16,7 @@ public class ViewContactsActivity extends BaseActivity implements ViewContactsFr
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_contacts);
         ButterKnife.bind(this);
-        if (savedInstanceState == null) {
-            attachViewContactsFragment();
-        }
+        attachViewContactsFragment();
     }
 
     private void attachViewContactsFragment() {

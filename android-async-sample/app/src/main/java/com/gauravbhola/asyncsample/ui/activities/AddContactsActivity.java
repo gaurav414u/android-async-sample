@@ -15,9 +15,7 @@ public class AddContactsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_contact);
         ButterKnife.bind(this);
-        if (savedInstanceState == null) {
-            attachAddContactsFragment();
-        }
+        attachAddContactsFragment();
     }
 
     private void attachAddContactsFragment() {

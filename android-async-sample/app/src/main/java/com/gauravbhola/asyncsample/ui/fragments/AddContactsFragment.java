@@ -2,13 +2,10 @@ package com.gauravbhola.asyncsample.ui.fragments;
 
 import com.gauravbhola.asyncsample.R;
 import com.gauravbhola.asyncsample.data.ContactsManager;
+import com.gauravbhola.asyncsample.data.model.AddContactsResponse;
 import com.gauravbhola.asyncsample.data.model.Contact;
-import com.gauravbhola.asyncsample.data.model.event.AddContactEvent;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.MainThread;
 import android.support.annotation.Nullable;
@@ -23,6 +20,8 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.lang.ref.WeakReference;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
@@ -33,9 +32,6 @@ import dagger.android.support.AndroidSupportInjection;
 public class AddContactsFragment extends Fragment {
     @Inject
     ContactsManager mContactsManager;
-
-    @Inject
-    EventBus mEventBus;
 
     @BindView(R.id.et_name)
     TextInputEditText mNameView;
@@ -55,6 +51,46 @@ public class AddContactsFragment extends Fragment {
     @BindView(R.id.progress_bar)
     ProgressBar mProgressBar;
 
+    private static class AddContactTask extends AsyncTask<Contact, Void, AddContactsResponse> {
+        WeakReference<AddContactsFragment> mFragmentInstance;
+        ContactsManager mContactsManager;
+
+        public AddContactTask(ContactsManager manager, AddContactsFragment fragment) {
+            super();
+            mContactsManager = manager;
+            mFragmentInstance = new WeakReference<AddContactsFragment>(fragment);
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            if (mFragmentInstance.get() == null) {
+                // Fragment not present, skip
+                return;
+            }
+            mFragmentInstance.get().showLoading();
+        }
+
+        @Override
+        protected void onPostExecute(AddContactsResponse response) {
+            super.onPostExecute(response);
+            if (mFragmentInstance.get() == null) {
+                // Fragment not present, skip
+                return;
+            }
+            if (response == null) {
+                mFragmentInstance.get().showError("Some error!");
+            } else {
+                mFragmentInstance.get().success();
+            }
+        }
+
+        @Override
+        protected AddContactsResponse doInBackground(Contact... contacts) {
+            return mContactsManager.addContact(contacts[0]);
+        }
+    }
+
     public static AddContactsFragment getInstance() {
         return new AddContactsFragment();
     }
@@ -71,22 +107,6 @@ public class AddContactsFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_add_contact, null);
         ButterKnife.bind(this, v);
         return v;
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onContactEvent(AddContactEvent event) {
-        switch (event.getStatus()) {
-            case ERROR:
-                showError(event.getMessage());
-                break;
-            case LOADING:
-                showLoading();
-                break;
-            case SUCCESS:
-                success();
-                break;
-            default:
-        }
     }
 
     @OnClick(R.id.btn_add)
@@ -107,7 +127,7 @@ public class AddContactsFragment extends Fragment {
         c.setEmail(mEmailView.getText().toString());
         c.setName(mNameView.getText().toString());
         c.setPhone(mPhoneView.getText().toString());
-        mContactsManager.addContact(c);
+        new AddContactTask(mContactsManager, this).execute(c);
     }
 
     public void setInteractionsEnabled(boolean enabled) {
@@ -142,18 +162,5 @@ public class AddContactsFragment extends Fragment {
         mErrorView.setVisibility(View.GONE);
 //        Toast.makeText(getActivity(), "Contact successfully added", Toast.LENGTH_SHORT).show();
         Snackbar.make(getView(), "Contact successfully added", Snackbar.LENGTH_SHORT).show();
-    }
-
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        mEventBus.register(this);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        mEventBus.unregister(this);
     }
 }

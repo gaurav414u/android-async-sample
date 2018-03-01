@@ -3,14 +3,10 @@ package com.gauravbhola.asyncsample.ui.fragments;
 import com.gauravbhola.asyncsample.R;
 import com.gauravbhola.asyncsample.data.ContactsManager;
 import com.gauravbhola.asyncsample.data.model.Contact;
-import com.gauravbhola.asyncsample.data.model.event.FetchContactsEvent;
 import com.gauravbhola.asyncsample.ui.adapters.ViewContactsAdapter;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.MainThread;
 import android.support.annotation.Nullable;
@@ -26,6 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,8 +39,46 @@ public class ViewContactsFragment extends Fragment {
     }
     private ViewContactsCallbacks mCallbacks;
 
-    @Inject
-    EventBus mEventBus;
+    private static class FetchContactsTask extends AsyncTask<Void, Void, List<Contact>> {
+        WeakReference<ViewContactsFragment> mFragmentInstance;
+        ContactsManager mContactsManager;
+
+        public FetchContactsTask(ContactsManager manager, ViewContactsFragment fragment) {
+            super();
+            mContactsManager = manager;
+            mFragmentInstance = new WeakReference<ViewContactsFragment>(fragment);
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            if (mFragmentInstance.get() == null) {
+                // Fragment not present, skip
+                return;
+            }
+            mFragmentInstance.get().showLoading();
+        }
+
+        @Override
+        protected void onPostExecute(List<Contact> contacts) {
+            super.onPostExecute(contacts);
+            if (mFragmentInstance.get() == null) {
+                // Fragment not present, skip
+                return;
+            }
+            if (contacts == null) {
+                mFragmentInstance.get().showError("Some error!");
+            } else {
+                mFragmentInstance.get().showData(contacts);
+            }
+        }
+
+        @Override
+        protected List<Contact> doInBackground(Void... voids) {
+            List<Contact> contacts = mContactsManager.fetchContacts();
+            return contacts;
+        }
+    }
 
     @Inject
     ContactsManager mContactsManager;
@@ -110,31 +145,17 @@ public class ViewContactsFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        mEventBus.register(this);
-        mContactsManager.fetchContacts();
+        new FetchContactsTask(mContactsManager, this).execute();
+    }
+
+    @OnClick(R.id.btn_retry)
+    public void onRetryClicked() {
+        new FetchContactsTask(mContactsManager, this).execute();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        mEventBus.unregister(this);
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onContactEvent(FetchContactsEvent event) {
-        switch (event.getStatus()) {
-            case ERROR:
-                showError(event.getMessage());
-                break;
-            case LOADING:
-                showLoading();
-                break;
-            case SUCCESS:
-                showData(event.getData());
-                break;
-            default:
-        }
-
     }
 
     public void showError(String message) {
