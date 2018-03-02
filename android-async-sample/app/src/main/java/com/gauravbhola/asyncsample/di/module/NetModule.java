@@ -47,7 +47,7 @@ public class NetModule {
     @Provides
     @Singleton
     AppExecutors provideAppExecutors() {
-        return new AppExecutors(Executors.newSingleThreadExecutor(), Executors.newFixedThreadPool(3), new AppExecutors.MainThreadExecutor());
+        return new AppExecutors(Executors.newFixedThreadPool(3), Executors.newSingleThreadExecutor(),  new AppExecutors.MainThreadExecutor());
     }
 
     @Provides
