@@ -120,6 +120,11 @@ public class ViewContactsFragment extends Fragment {
         mEventBus.unregister(this);
     }
 
+    @OnClick(R.id.btn_retry)
+    public void onRetryClicked() {
+        mContactsManager.fetchContacts();
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onContactEvent(FetchContactsEvent event) {
         switch (event.getStatus()) {
