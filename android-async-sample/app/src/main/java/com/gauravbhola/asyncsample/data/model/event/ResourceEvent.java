@@ -1,6 +1,7 @@
 package com.gauravbhola.asyncsample.data.model.event;
 
 
+
 public class ResourceEvent<T> {
     public enum Status {SUCCESS, ERROR, LOADING}
     private Status mStatus;
@@ -32,7 +33,6 @@ public class ResourceEvent<T> {
 
     public ResourceEvent<T> setData(T data) {
         mData = data;
-
         return this;
     }
 
