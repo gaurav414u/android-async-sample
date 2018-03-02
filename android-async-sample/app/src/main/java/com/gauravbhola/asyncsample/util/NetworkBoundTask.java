@@ -2,6 +2,7 @@ package com.gauravbhola.asyncsample.util;
 
 
 
+import com.gauravbhola.asyncsample.data.model.event.FetchContactsEvent;
 import com.gauravbhola.asyncsample.data.model.event.ResourceEvent;
 
 import org.greenrobot.eventbus.EventBus;
@@ -18,27 +19,28 @@ public abstract class NetworkBoundTask<ResponseType, EventType extends ResourceE
 
     public NetworkBoundTask(EventBus eventBus) {
         mEventBus = eventBus;
+        mEventBus.post((EventType) getNewEventWithCachedData());
     }
 
     @Override
     public void run() {
-        EventType t = (EventType) getNewEvent().setStatus(ResourceEvent.Status.LOADING);
+        EventType t = (EventType) getNewEventWithCachedData().setStatus(ResourceEvent.Status.LOADING);
         mEventBus.post(t);
 
-        Call<ResponseType> call = createCall();
         try {
+            Call<ResponseType> call = createCall();
             Response<ResponseType> res = call.execute();
 
             if (res.isSuccessful()) {
-                t = (EventType) getNewEvent().setStatus(ResourceEvent.Status.SUCCESS).setData(res.body());
+                t = (EventType) getNewEventWithCachedData().setStatus(ResourceEvent.Status.SUCCESS).setData(res.body());
                 saveCallResult(t.getData());
                 mEventBus.post(t);
             } else {
-                t = (EventType) getNewEvent().setStatus(ResourceEvent.Status.ERROR).setMessage(res.message());
+                t = (EventType) getNewEventWithCachedData().setStatus(ResourceEvent.Status.ERROR).setMessage(res.message());
                 mEventBus.post(t);
             }
         } catch (IOException e) {
-            t = (EventType) getNewEvent().setStatus(ResourceEvent.Status.ERROR).setMessage(e.getMessage());
+            t = (EventType) getNewEventWithCachedData().setStatus(ResourceEvent.Status.ERROR).setMessage(e.getMessage());
             mEventBus.post(t);
         }
     }
@@ -46,7 +48,7 @@ public abstract class NetworkBoundTask<ResponseType, EventType extends ResourceE
     @WorkerThread
     public abstract Call<ResponseType> createCall();
 
-    public abstract EventType getNewEvent();
+    public abstract EventType getNewEventWithCachedData();
 
     @WorkerThread
     public abstract void saveCallResult(ResponseType response);

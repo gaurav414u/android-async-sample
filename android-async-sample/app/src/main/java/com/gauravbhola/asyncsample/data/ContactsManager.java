@@ -40,8 +40,6 @@ public class ContactsManager {
     }
 
     public void fetchContacts() {
-        mEventBus.post(new FetchContactsEvent(ResourceEvent.Status.LOADING, null, null));
-
         mAppExecutors.networkIO().execute(new NetworkBoundTask<List<Contact>, FetchContactsEvent>(mEventBus) {
             @Override
             public Call<List<Contact>> createCall() {
@@ -49,7 +47,7 @@ public class ContactsManager {
             }
 
             @Override
-            public FetchContactsEvent getNewEvent() {
+            public FetchContactsEvent getNewEventWithCachedData() {
                 return new FetchContactsEvent();
             }
 
@@ -62,8 +60,6 @@ public class ContactsManager {
     }
 
     public void addContact(final Contact contact) {
-        mEventBus.post(new AddContactEvent(ResourceEvent.Status.LOADING, null, null));
-
         mAppExecutors.networkIO().execute(new NetworkBoundTask<AddContactsResponse, AddContactEvent>(mEventBus) {
             @Override
             public Call<AddContactsResponse> createCall() {
@@ -76,7 +72,7 @@ public class ContactsManager {
             }
 
             @Override
-            public AddContactEvent getNewEvent() {
+            public AddContactEvent getNewEventWithCachedData() {
                 return new AddContactEvent();
             }
 
