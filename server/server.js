@@ -1,3 +1,4 @@
+"use strict"
 const express = require('express')
 const app = express()
 const port = process.env.MOCK_SERVER_PORT || 5000
