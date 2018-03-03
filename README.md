@@ -1,3 +1,13 @@
+# Testing the App
+1. Start the local dev server
+
+    ```
+    cd server
+    npm install
+    npm run serve
+    ```
+2. Get the local ip address and change the api url in <a href="https://github.com/gaurav414u/android-async-sample/blob/master/android-async-sample/app/src/main/java/com/gauravbhola/asyncsample/util/Const.java">Const.java</a>
+3. Run the application
 
 # Developed By
 
