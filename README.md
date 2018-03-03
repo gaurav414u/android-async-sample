@@ -1,4 +1,4 @@
-# Testing the App
+# Running the App
 1. Start the local dev server
 
     ```
